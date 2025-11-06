@@ -32,7 +32,7 @@ test('hacker can not login with the incorrect code', function () {
         ->set('code', '654321')
         ->call('submit')
         ->assertHasErrors('code')
-        ->assertSessionHas('is_admin', false);
+        ->assertSessionMissing('is_admin');
 });
 
 test('hacker can not login with the incorrect code too many times', function () {
