@@ -1,40 +1,56 @@
 <?php
 
-use App\Models\User;
-use Livewire\Volt\Volt as LivewireVolt;
+use App\Livewire\Admin\CodeInput;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('login screen can be rendered', function () {
-    $response = $this->get('/admin/login');
+    $response = $this->withSession(['is_admin' => false])->get('/');
     $response->assertStatus(200);
 });
 
-// TODO: Add tests for authentication after the login page is implemented
-/*test('users can authenticate using the login screen', function () {
-    $user = User::factory()->create();
-
-    $response = LivewireVolt::test('auth.login')
-        ->set('email', $user->email)
-        ->set('password', 'password')
-        ->call('login');
-
-    $response
-        ->assertHasNoErrors()
-        ->assertRedirect(route('dashboard', absolute: false));
-
-    $this->assertAuthenticated();
+test('authenticated users are redirected to the dashboard', function () {
+    $response = $this->withSession(['is_admin' => true])->get('/');
+    $response->assertRedirect(route('admin.dashboard'));
 });
 
-test('users can not authenticate with invalid password', function () {
-    $user = User::factory()->create();
+test('admin can login with the correct code', function () {
+    config(['admin.admin_code' => '123456']);
 
-    $response = LivewireVolt::test('auth.login')
-        ->set('email', $user->email)
-        ->set('password', 'wrong-password')
-        ->call('login');
+    Livewire::test(CodeInput::class)
+        ->set('code', '123456')
+        ->call('submit')
+        ->assertHasNoErrors()
+        ->assertSessionHas('is_admin', true)
+        ->assertRedirect(route('admin.dashboard'));
+});
 
-    $response->assertHasErrors('email');
+test('hacker can not login with the incorrect code', function () {
+    config(['admin.admin_code' => '123456']);
 
-    $this->assertGuest();
-});*/
+    Livewire::test(CodeInput::class)
+        ->set('code', '654321')
+        ->call('submit')
+        ->assertHasErrors('code')
+        ->assertSessionHas('is_admin', false);
+});
+
+test('hacker can not login with the incorrect code too many times', function () {
+    config(['admin.admin_code' => '123456']);
+
+    for ($i = 0; $i < 5; $i++) {
+        Livewire::test(CodeInput::class)
+            ->set('code', '654321')
+            ->call('submit')
+            ->assertHasErrors('code')
+            ->assertSessionMissing('is_admin')
+            ->assertDontSee('Příliš mnoho pokusů');
+    }
+
+    Livewire::test(CodeInput::class)
+        ->set('code', '123456')
+        ->call('submit')
+        ->assertHasErrors('code')
+        ->assertSessionMissing('is_admin')
+        ->assertSee('Příliš mnoho pokusů');
+});
