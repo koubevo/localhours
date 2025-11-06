@@ -6,7 +6,8 @@ use App\Http\Controllers\HoursController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('admin/login', 'admin.login')
+Route::view('/', 'admin.login')
+    ->middleware('unauthenticated')
     ->name('admin.login');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
