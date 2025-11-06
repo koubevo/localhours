@@ -9,7 +9,7 @@ use Livewire\Livewire;
 uses(RefreshDatabase::class);
 
 test('create hours form can be rendered', function () {
-    $response = $this->get('/admin/hours/create');
+    $response = $this->withSession(['is_admin' => true])->get('/admin/hours/create');
 
     $response->assertStatus(200);
 });

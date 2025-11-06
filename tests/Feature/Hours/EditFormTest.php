@@ -9,7 +9,7 @@ uses(RefreshDatabase::class);
 
 test('edit hours form can be rendered', function () {
     $hour = Hour::factory()->create();
-    $response = $this->get('/admin/hours/'.$hour->id.'/edit');
+    $response = $this->withSession(['is_admin' => true])->get('/admin/hours/'.$hour->id.'/edit');
 
     $response->assertStatus(200);
 });

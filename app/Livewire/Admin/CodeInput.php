@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Component;
 
 class CodeInput extends Component
@@ -10,13 +11,24 @@ class CodeInput extends Component
 
     public function submit()
     {
+        $throttleKey = 'admin-login:'.request()->ip();
+
+        if (RateLimiter::tooManyAttempts($throttleKey, $perMinute = 5)) {
+            $this->addError('code', 'Příliš mnoho pokusů. Zkuste to za minutu.');
+
+            return;
+        }
+
         if ($this->code === config('admin.admin_code')) {
             session()->put('is_admin', true);
 
-            return redirect()->route('admin.dashboard');
-        }
+            RateLimiter::clear($throttleKey);
 
-        $this->addError('code', 'Neplatný kód');
+            return redirect()->route('admin.dashboard');
+        } else {
+            RateLimiter::increment($throttleKey);
+            $this->addError('code', 'Neplatný kód');
+        }
     }
 
     public function render()

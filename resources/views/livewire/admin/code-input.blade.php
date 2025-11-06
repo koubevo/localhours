@@ -2,7 +2,10 @@
     <form wire:submit.prevent="submit" class="p-8 rounded-lg shadow space-y-2">
         <div class="space-y-1">
             <flux:heading size="lg">Přihlášení</flux:heading>
-            <flux:input icon="key" />
+            <flux:input icon="key" wire:model="code" type="password"  />
+            @error('code')
+                <div class="text-red-500">{{ $message }}</div>
+            @enderror
         </div>
         <flux:button type="submit" variant="primary" size="sm" class="cursor-pointer">
             Přihlásit se
