@@ -42,7 +42,7 @@ This project leverages a modern PHP stack with a focus on code quality and a str
 -   **Testing:** Pest
 -   **Static Analysis:** Larastan (configured to level 5)
 -   **Code Styling:** Laravel Pint (for automated code formatting)
--   **CI / Code Review:** Coderabbit.ai (provides automated AI-powered reviews on pull requests)
+-   **CI / Code Review:** Coderabbit.ai, Gemini (provides automated AI-powered reviews on pull requests)
 
 ---
 
