@@ -42,11 +42,11 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
             <x-card>
                 <div class="flex items-center gap-2 mb-1">
-                @if ($employee->hasDraftHoursToday())
-                    <flux:badge color="amber" size="sm">Rozděláno</flux:badge>
-                @endif
-                        <flux:text>Dnešní hodiny</flux:text>
-                    </div>
+                    @if ($employee->hasDraftHoursToday())
+                        <flux:badge color="amber" size="sm">Rozděláno</flux:badge>
+                    @endif
+                    <flux:text>Dnešní hodiny</flux:text>
+                </div>
                     <flux:heading size="xl">
                         @if ($employee->hasHoursToday())
                             @foreach ($employee->todayHours() as $todayHours)
@@ -78,7 +78,8 @@
                     'editRoute' => $employee->is_hidden ? null : 'hours.edit',
                     'deleteModel' => $employee->is_hidden ? null : \App\Models\Hour::class,
                     'heading' => 'Docházka',
-                    'tableNumber' => 1
+                    'tableNumber' => 1,
+                    'showHoursLegend' => true
                 ])
             @endif
             @if (!empty($employee->payments))

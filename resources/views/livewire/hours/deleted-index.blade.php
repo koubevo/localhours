@@ -21,7 +21,8 @@
             'restoreRoute' => 'hours.restore',
             'restoreModel' => \App\Models\Hour::class,
             'heading' => 'Smazané hodiny',
-            'tableType' => 'deleted'
+            'tableType' => 'deleted',
+            'showHoursLegend' => true
         ])
-                </section>
+    </section>
 @endsection
