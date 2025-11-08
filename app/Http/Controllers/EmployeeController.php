@@ -3,21 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): View
     {
         return view('components.employees.create');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Employee $employee)
+    public function show(Employee $employee): View
     {
         $employee->load([
             'hours' => function ($query) {
@@ -31,15 +27,12 @@ class EmployeeController extends Controller
         return view('livewire.employees.show', ['employee' => $employee]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Employee $employee)
+    public function edit(Employee $employee): View
     {
         return view('components.employees.edit', ['employee' => $employee]);
     }
 
-    public function toggleHidden(Employee $employee)
+    public function toggleHidden(Employee $employee): RedirectResponse
     {
         $employee->update(['is_hidden' => ! $employee->is_hidden]);
 

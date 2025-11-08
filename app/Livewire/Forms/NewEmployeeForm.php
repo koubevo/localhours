@@ -3,7 +3,10 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Employee;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Livewire\Component;
+use Livewire\Features\SupportRedirects\Redirector;
 
 class NewEmployeeForm extends Component
 {
@@ -11,12 +14,15 @@ class NewEmployeeForm extends Component
 
     public ?int $hour_rate;
 
-    protected $rules = [
+    /**
+     * @var array<string, string>
+     */
+    protected array $rules = [
         'name' => 'required|string|max:255',
         'hour_rate' => 'nullable|integer|min:1|max:1000',
     ];
 
-    public function store()
+    public function store(): RedirectResponse|Redirector
     {
         $this->validate();
 
@@ -31,8 +37,8 @@ class NewEmployeeForm extends Component
         return redirect()->route('admin.dashboard');
     }
 
-    public function render(
-    ) {
+    public function render(): View
+    {
         return view('livewire.forms.new-employee-form');
     }
 }

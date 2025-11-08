@@ -6,10 +6,14 @@ use Carbon\Carbon;
 
 class HoursCalculator
 {
-    public static function calculateMinutesBetween(string $startTimeHhMm, string $endTimeHhMm): float
+    public static function calculateMinutesBetween(string $startTimeHhMm, string $endTimeHhMm): ?float
     {
         $start = Carbon::createFromFormat('H:i', $startTimeHhMm);
         $end = Carbon::createFromFormat('H:i', $endTimeHhMm);
+
+        if (! $start || ! $end) {
+            return null;
+        }
 
         if ($end->equalTo($start)) {
             return 1440;
@@ -25,6 +29,10 @@ class HoursCalculator
     public static function calculateEarning(string $startTimeHhMm, string $endTimeHhMm, int $hourRate): int
     {
         $minutes = self::calculateMinutesBetween($startTimeHhMm, $endTimeHhMm);
+
+        if ($minutes === null) {
+            return 0;
+        }
 
         return (int) round(($minutes / 60) * $hourRate);
     }

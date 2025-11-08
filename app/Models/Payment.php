@@ -11,12 +11,18 @@ class Payment extends Model
 {
     use SoftDeletes;
 
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'employee_id',
         'amount',
         'payment_date',
     ];
 
+    /**
+     * @return BelongsTo<Employee, $this>
+     */
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);

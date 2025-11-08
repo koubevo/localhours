@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Ui;
 
+use Illuminate\View\View;
 use Livewire\Component;
 
 class Toast extends Component
@@ -12,7 +13,7 @@ class Toast extends Component
 
     public string $icon = 'shield-check';
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.ui.toast');
     }

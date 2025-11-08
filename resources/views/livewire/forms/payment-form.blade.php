@@ -7,7 +7,7 @@
                         Zaměstnanec *
                     </flux:label>
 
-                    <flux:select wire:model.live="employee">
+                    <flux:select wire:model.live="employee" :disabled="$isEditMode">
                         <flux:select.option value="0" disabled>Zaměstnanec</flux:select.option>
                         @foreach ($employees as $emp)
                             <flux:select.option id="{{ $emp->id }}" value="{{ $emp->id }}">
