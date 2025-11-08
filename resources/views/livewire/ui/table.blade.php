@@ -296,22 +296,40 @@
                 @endif
             </div>
         </div>
-    <script>
-        function printTable(containerId) {
+        <div style="text-align: center; margin-top:10px;" class="hidden print:block">
+
+            <div style="display: inline-block; margin-right: 20px;">
+                <span style="display: inline-block; width: 10px; height: 10px; background-color: #16a34a; border-radius: 50%; margin-right: 5px; vertical-align: middle; -webkit-print-color-adjust: exact; print-color-adjust: exact; opacity: 0.7;"></span>
+                <span style="font-size: 10pt; vertical-align: middle;">Vyplněno</span>
+            </div>
+            
+            <div style="display: inline-block; margin-right: 20px;">
+                <span style="display: inline-block; width: 10px; height: 10px; background-color: #f59e0b; border-radius: 50%; margin-right: 5px; vertical-align: middle; -webkit-print-color-adjust: exact; print-color-adjust: exact; opacity: 0.7;"></span>
+                <span style="font-size: 10pt; vertical-align: middle;">Rozděláno</span>
+            </div>
+            
+            <div style="display: inline-block;">
+                <span style="display: inline-block; width: 10px; height: 10px; background-color: #ef4444; border-radius: 50%; margin-right: 5px; vertical-align: middle; -webkit-print-color-adjust: exact; print-color-adjust: exact; opacity: 0.7;"></span>
+                <span style="font-size: 10pt; vertical-align: middle;">Nevyplněno</span>
+            </div>
         
-        const tableContainer = document.getElementById(containerId);
-        if (!tableContainer) {
-            console.error('Kontejner tabulky s ID ' + containerId + ' nebyl nalezen.');
-            return;
-        }
-    
-        tableContainer.classList.add('print-active');
-    
-        window.print();
-    
-        tableContainer.classList.remove('print-active');
-        }
-    </script>
+        </div>
+        <script>
+            function printTable(containerId) {
+            
+            const tableContainer = document.getElementById(containerId);
+            if (!tableContainer) {
+                console.error('Kontejner tabulky s ID ' + containerId + ' nebyl nalezen.');
+                return;
+            }
+        
+            tableContainer.classList.add('print-active');
+        
+            window.print();
+        
+            tableContainer.classList.remove('print-active');
+            }
+        </script>
     </div>
     @if ($showHoursLegend)
         <div class="mt-4">
