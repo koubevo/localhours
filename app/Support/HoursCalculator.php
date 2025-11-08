@@ -11,7 +11,7 @@ class HoursCalculator
         $start = Carbon::createFromFormat('H:i', $startTimeHhMm);
         $end = Carbon::createFromFormat('H:i', $endTimeHhMm);
 
-        if (! $star || ! $end) {
+        if (! $start || ! $end) {
             return null;
         }
 
