@@ -40,7 +40,7 @@ This project leverages a modern PHP stack with a focus on code quality and a str
 -   **UI Kit:** FluxUI
 -   **Development Environment:** Docker via Laravel Sail
 -   **Testing:** Pest
--   **Static Analysis:** Larastan (configured to level 5)
+-   **Static Analysis:** Larastan (configured to level 9)
 -   **Code Styling:** Laravel Pint (for automated code formatting)
 -   **CI / Code Review:** Coderabbit.ai, Gemini (provides automated AI-powered reviews on pull requests)
 
@@ -97,6 +97,9 @@ This application is designed to be run with Docker. You must have **Docker** and
 
 6.  **Access the application:**
     You're all set! The application should now be running at [http://localhost](http://localhost) (or whatever `APP_PORT` you set in your `.env`).
+
+7.  **Access the Telescope**
+    Telescope should be running on [http://localhost/telescope](http://localhost/telescope). You can find interesting info there.
 
 ### Developer Workflow Note
 

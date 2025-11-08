@@ -94,8 +94,12 @@
             @if ($tableType === 'deleted')
                 <col class="w-10 print:hidden"/>
             @else
-                <col class="w-10 print:hidden"/>
-                <col class="w-10 print:hidden"/>
+                @if (!is_null($deleteModel))
+                    <col class="w-10 print:hidden"/>
+                @endif
+                @if (!is_null($editRoute))
+                    <col class="w-10 print:hidden"/>
+                @endif
             @endif
         </colgroup>
         <thead class="border-b-2 border-gray-500">
@@ -156,7 +160,7 @@
                                         </flux:badge>                                 
                                     @endif
                                 @elseif (isset($column['type']))
-                                    @if ($column['type'] === 'currency')
+                                    @if ($column['type'] === 'currency' && $value)
                                         {{ $value }} Kč
                                     @endif
                                 @else
@@ -171,12 +175,15 @@
                                 <flux:icon name="arrow-uturn-left" class="size-4 hover:text-green-600"/>
                             </button>
                         </td>
-                    @else
+                    @endif
+                    @if (!is_null($editRoute))
                         <td class="py-3 border-b text-end pe-2 print:hidden">
                             <a href="{{ route($editRoute, $row->id) }}" class="cursor-pointer inline-flex justify-end w-full" title="Upravit">
                                 <flux:icon name="pencil" class="size-4"/>
                             </a>
                         </td>
+                    @endif
+                    @if (!is_null($deleteModel))
                         <td class="py-3 border-b text-end pe-2 print:hidden">
                             <button class="cursor-pointer inline-flex justify-end w-full" wire:click="confirmDelete({{ $row->id }})" title="Smazat">
                                 <flux:icon name="trash" class="size-4 hover:text-red-500"/>
@@ -206,7 +213,7 @@
                         @if (isset($column['countable']) && $column['countable'])
                             <th class="text-start py-3">
                                 <flux:heading>
-                                    {{ collect($displayRows)->sum('earning') }}
+                                    {{ collect($displayRows)->sum('earning') }} Kč
                                 </flux:heading>
                             </th>
                         @else

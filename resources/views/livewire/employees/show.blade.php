@@ -6,29 +6,36 @@
 
     <section class="space-y-4">
         <div class="w-full">
-            @livewire('ui.button-group', [
-                'buttons' => [
-                    [
+            @php
+                $buttonsToShow = [];
+
+                if (!$employee->is_hidden) {
+                    $buttonsToShow[] = [
                         'text' => 'Přidat hodiny',
                         'route' => route('hours.create', ['employee' => $employee->id]),
                         'icon' => 'plus'
-                    ],
-                    [
+                    ];
+                    $buttonsToShow[] = [
                         'text' => 'Zaplatit',
                         'route' => route('payment.create', ['employee' => $employee->id]),
                         'icon' => 'banknotes'
-                    ],
-                    [
-                        'text' => 'Upravit data zaměstnance',
-                        'route' => route('employee.edit', ['employee' => $employee]),
-                        'icon' => 'pencil'
-                    ],
-                    [
-                        'text' => $employee->is_hidden ? 'Znovu zobrazit zaměstnance' : 'Skrýt zaměstnance',
-                        'route' => route('employee.toggleHidden', ['employee' => $employee]),
-                        'icon' => $employee->is_hidden ? 'eye' : 'eye-slash'
-                    ],
-                ]
+                    ];
+                }
+            
+                $buttonsToShow[] = [
+                    'text' => 'Upravit data zaměstnance',
+                    'route' => route('employee.edit', ['employee' => $employee]),
+                    'icon' => 'pencil'
+                ];
+                $buttonsToShow[] = [
+                    'text' => $employee->is_hidden ? 'Znovu zobrazit zaměstnance' : 'Skrýt zaměstnance',
+                    'route' => route('employee.toggleHidden', ['employee' => $employee]),
+                    'icon' => $employee->is_hidden ? 'eye' : 'eye-slash'
+                ];
+            @endphp
+
+            @livewire('ui.button-group', [
+                'buttons' => $buttonsToShow
             ])
         </div>
         
@@ -68,8 +75,8 @@
                     ],
                     'rows' => $employee->hours,
                     'showMonthSelector' => true,
-                    'editRoute' => 'hours.edit',
-                    'deleteModel' => \App\Models\Hour::class,
+                    'editRoute' => $employee->is_hidden ? null : 'hours.edit',
+                    'deleteModel' => $employee->is_hidden ? null : \App\Models\Hour::class,
                     'heading' => 'Docházka',
                     'tableNumber' => 1
                 ])
@@ -82,8 +89,8 @@
                         ['label' => 'Částka', 'key' => 'amount', 'countable' => true, 'type' => 'currency'],
                     ],
                     'rows' => $employee->payments,
-                    'editRoute' => 'payment.edit',
-                    'deleteModel' => \App\Models\Payment::class,
+                    'editRoute' => $employee->is_hidden ? null : 'payment.edit',
+                    'deleteModel' => $employee->is_hidden ? null : \App\Models\Payment::class,
                     'heading' => 'Platby',
                     'tableNumber' => 2
                 ])

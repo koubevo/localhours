@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Database\Factories\HourFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,9 +11,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Hour extends Model
 {
+    /**
+     * @use HasFactory<HourFactory>
+     */
     use HasFactory;
+
     use SoftDeletes;
 
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'employee_id',
         'work_date',
@@ -23,19 +31,25 @@ class Hour extends Model
         'status',
     ];
 
+    /**
+     * @var list<string>
+     */
     protected $appends = ['formatted_work_date'];
 
+    /**
+     * @return BelongsTo<Employee, $this>
+     */
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
     }
 
-    public function getStartTimeAttribute($value)
+    public function getStartTimeAttribute(string $value): ?string
     {
         return $value ? Carbon::parse($value)->format('H:i') : null;
     }
 
-    public function getEndTimeAttribute($value)
+    public function getEndTimeAttribute(?string $value): ?string
     {
         return $value ? Carbon::parse($value)->format('H:i') : null;
     }

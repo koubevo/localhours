@@ -11,8 +11,14 @@ use Livewire\Component;
 
 class Table extends Component
 {
+    /**
+     * @var string[]
+     */
     public array $columns = [];
 
+    /**
+     * @var Collection<int, Hour|Payment>
+     */
     public Collection $rows;
 
     public bool $showMonthSelector = false;
@@ -39,6 +45,9 @@ class Table extends Component
 
     public ?string $deleteModel = null;
 
+    /**
+     * @var array<string, float|string|null>|null
+     */
     public ?array $arrayDeleteInformation = null;
 
     public ?string $heading = null;
@@ -51,6 +60,9 @@ class Table extends Component
 
     public ?string $restoreModel = null;
 
+    /**
+     * @var array<string, float|string|null>|null
+     */
     public ?array $arrayRestoreInformation = null;
 
     public ?int $tableNumber = 1;
@@ -119,7 +131,7 @@ class Table extends Component
         $this->rows = $query->get();
     }
 
-    public function confirmDelete($rowId): void
+    public function confirmDelete(int $rowId): void
     {
         $this->rowToDeleteId = $rowId;
         $this->showDeleteModal = true;
@@ -140,7 +152,7 @@ class Table extends Component
         }
     }
 
-    public function confirmRestore($rowId): void
+    public function confirmRestore(int $rowId): void
     {
         $this->rowToRestoreId = $rowId;
         $this->showRestoreModal = true;
@@ -162,11 +174,11 @@ class Table extends Component
 
     public function deleteRow(): void
     {
-        if (! $this->rowToDeleteId) {
+        $model = $this->deleteModel;
+        if (! $this->rowToDeleteId || ! isset($model)) {
             return;
         }
 
-        $model = $this->deleteModel;
         $row = $model::findOrFail($this->rowToDeleteId);
         $row->delete();
 
@@ -179,11 +191,12 @@ class Table extends Component
 
     public function restoreRow(): void
     {
-        if (! $this->rowToRestoreId) {
+        $model = $this->restoreModel;
+
+        if (! $this->rowToRestoreId || ! isset($model)) {
             return;
         }
 
-        $model = $this->restoreModel;
         $row = $model::onlyTrashed()->findOrFail($this->rowToRestoreId);
         $row->restore();
 
@@ -194,6 +207,9 @@ class Table extends Component
         $this->redirect(request()->header('Referer'), navigate: true);
     }
 
+    /**
+     * @return array<string, string|null>
+     */
     public function arrayHourInformation(Hour $hour, Employee $employee): array
     {
         return [
@@ -208,6 +224,9 @@ class Table extends Component
         ];
     }
 
+    /**
+     * @return array<string, string|float|null>
+     */
     public function arrayPaymentInformation(Payment $payment, Employee $employee): array
     {
         return [

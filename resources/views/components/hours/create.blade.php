@@ -4,7 +4,6 @@
 
 @section('content')
     @livewire('forms.hours-form', [
-        'employee' => $preselectedEmployee ?? null,
-        'date' => $preselectedDate ?? null
+        'employee' => $preselectedEmployee
     ])
 @endsection

@@ -7,32 +7,40 @@ use App\Models\Employee;
 use App\Models\Hour;
 use App\Support\HoursCalculator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Livewire\Component;
+use Livewire\Features\SupportRedirects\Redirector;
 
 class HoursForm extends Component
 {
+    /**
+     * @var Collection<int, Employee>
+     */
     public Collection $employees;
 
-    public Employee|string|int|null $employee;
+    public ?int $employee;
 
-    public $work_date;
+    public string $work_date;
 
-    public $start_time;
+    public string $start_time;
 
-    public $end_time;
+    public ?string $end_time;
 
     public ?string $description;
 
     public ?int $hour_rate;
 
-    // For edit mode
     public Hour $hour;
 
     public int $hourId;
 
     public bool $isEditMode = false;
 
-    protected $rules = [
+    /**
+     * @var array<string, string>
+     */
+    protected array $rules = [
         'employee' => 'required|exists:employees,id',
         'work_date' => 'required|date',
         'start_time' => 'required|date_format:H:i',
@@ -41,19 +49,18 @@ class HoursForm extends Component
         'hour_rate' => 'nullable|integer|min:0|max:100000',
     ];
 
-    public function mount($employee = null, $date = null, $hour_id = null)
+    public function mount(?int $employee = null, ?string $date = null, ?int $hour_id = null): void
     {
         $this->employees = Employee::where('is_hidden', false)->orderBy('name')->get();
+        $isEditMode = $hour_id ? true : false;
 
-        if ($hour_id) {
-            // Edit mode
+        if ($isEditMode) {
             $this->isEditMode = true;
             $this->hourId = $hour_id;
             $this->hour = Hour::findOrFail($hour_id);
             $this->employee = $this->hour->employee_id;
             $this->fill($this->hour->except(['employee_id']));
         } else {
-            // Create mode
             $this->employee = $employee ? $employee : 0;
             $this->work_date = $date ?: now()->format('Y-m-d');
         }
@@ -63,9 +70,9 @@ class HoursForm extends Component
         }
     }
 
-    public function updateHourRate()
+    public function updateHourRate(): void
     {
-        if ($this->employee) {
+        if ($this->employee && isset($this->employee)) {
             $selectedEmployee = Employee::find($this->employee);
             if ($selectedEmployee) {
                 $this->hour_rate = $selectedEmployee->hour_rate ?? 0;
@@ -73,19 +80,18 @@ class HoursForm extends Component
         }
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.forms.hours-form');
     }
 
-    public function save()
+    public function save(): Redirector|RedirectResponse
     {
         $validated = $this->validate();
 
-        $data = collect($validated)
-            ->except(['hour_rate', 'employee'])
-            ->put('employee_id', $validated['employee'])
-            ->toArray();
+        $data = $validated;
+        $data['employee_id'] = $data['employee'];
+        unset($data['hour_rate'], $data['employee']);
 
         if (isset($data['end_time']) && $data['end_time'] !== '') {
             $data['status'] = HoursStatus::Completed;
