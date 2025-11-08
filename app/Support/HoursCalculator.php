@@ -11,7 +11,7 @@ class HoursCalculator
         $start = Carbon::createFromFormat('H:i', $startTimeHhMm);
         $end = Carbon::createFromFormat('H:i', $endTimeHhMm);
 
-        if (! isset($start) || ! isset($end)) {
+        if (! $star || ! $end) {
             return null;
         }
 
@@ -29,6 +29,10 @@ class HoursCalculator
     public static function calculateEarning(string $startTimeHhMm, string $endTimeHhMm, int $hourRate): int
     {
         $minutes = self::calculateMinutesBetween($startTimeHhMm, $endTimeHhMm);
+
+        if ($minutes === null) {
+            return 0;
+        }
 
         return (int) round(($minutes / 60) * $hourRate);
     }

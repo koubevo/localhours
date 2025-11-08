@@ -160,7 +160,7 @@
                                         </flux:badge>                                 
                                     @endif
                                 @elseif (isset($column['type']))
-                                    @if ($column['type'] === 'currency' && $value)
+                                    @if ($column['type'] === 'currency' && !is_null($value))
                                         {{ $value }} Kč
                                     @endif
                                 @else
@@ -213,7 +213,10 @@
                         @if (isset($column['countable']) && $column['countable'])
                             <th class="text-start py-3">
                                 <flux:heading>
-                                    {{ collect($displayRows)->sum('earning') }} Kč
+                                    {{ collect($displayRows)->sum($column['key']) }}
+                                    @if ($column['type'] === 'currency')
+                                        Kč
+                                    @endif
                                 </flux:heading>
                             </th>
                         @else

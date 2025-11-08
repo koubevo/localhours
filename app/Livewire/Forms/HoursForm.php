@@ -49,7 +49,7 @@ class HoursForm extends Component
         'hour_rate' => 'nullable|integer|min:0|max:100000',
     ];
 
-    public function mount(?int $employee = null, ?string $date = null, ?int $hour_id = null): void
+    public function mount(?int $employee = null, ?int $hour_id = null): void
     {
         $this->employees = Employee::where('is_hidden', false)->orderBy('name')->get();
         $isEditMode = $hour_id ? true : false;
@@ -62,7 +62,7 @@ class HoursForm extends Component
             $this->fill($this->hour->except(['employee_id']));
         } else {
             $this->employee = $employee ? $employee : 0;
-            $this->work_date = $date ?: now()->format('Y-m-d');
+            $this->work_date = now()->format('Y-m-d');
         }
 
         if ($this->employee) {
