@@ -20,8 +20,9 @@
                 'showEmployeeSelector' => true,
                 'editRoute' => 'hours.edit',
                 'deleteModel' => \App\Models\Hour::class,
-                'heading' => 'Docházka'
+                'heading' => 'Docházka',
+                'showHoursLegend' => true
             ])
-        @endif
-                    </section>
+        @endif  
+    </section>
 @endsection

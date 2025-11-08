@@ -67,6 +67,8 @@ class Table extends Component
 
     public ?int $tableNumber = 1;
 
+    public ?bool $showHoursLegend = false;
+
     public function render(): View
     {
         return view('livewire.ui.table');

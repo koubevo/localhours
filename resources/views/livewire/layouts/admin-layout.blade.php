@@ -63,6 +63,7 @@
             </flux:navlist.item>
         </flux:navlist>
         <flux:spacer />
+        <x-hours-legend />
         <flux:navlist variant="outline">
             <flux:navlist.item icon="plus" href="{{ route('employee.create') }}">
                 Přidat zaměstnance
