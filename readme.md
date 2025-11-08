@@ -1,6 +1,6 @@
-# Hours: Self-Hosted Time Tracking
+# Localhours: Self-Hosted Time Tracking
 
-**Hours** is a simple, self-hosted web application designed for internal time tracking and basic payroll management. It allows an administrator to manage employees, log their work hours, and track payments.
+**Localhours** is a simple, self-hosted web application designed for internal time tracking and basic payroll management. It allows an administrator to manage employees, log their work hours, and track payments.
 
 The application is built using the TALL stack philosophy, heavily featuring **Laravel**, **Livewire**, and the **FluxUI** component library. It is containerized with **Docker** via **Laravel Sail** for a smooth, reproducible development environment.
 
@@ -55,8 +55,8 @@ This application is designed to be run with Docker. You must have **Docker** and
 1.  **Clone the repository:**
 
     ```bash
-    git clone [https://github.com/koubevo/hours.git](https://github.com/koubevo/hours.git)
-    cd hours
+    git clone [https://github.com/koubevo/localhours.git](https://github.com/koubevo/localhours.git)
+    cd localhours
     ```
 
 2.  **Install Composer Dependencies:**
